@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# setup to ensure devbox based processes can start successfully
+
+set -e
+
+# ensure postgres has intial database files
+if [ -z "$(ls -A "$PGDATA")" ]; then
+  echo "==> no files in \$PGDATA, initialising postgres"
+  initdb -U postgres
+fi
+
+if [ -f "Gemfile" ]; then
+  if [ ! -f .bundle/config ]; then
+    echo "==> Configuring bundler to exclude production gems"
+    bundle config set without 'production'
+  fi
+
+  echo "==> Installing gem dependencies…"
+  bundle check >/dev/null 2>&1 || {
+    bundle install
+  }
+fi
