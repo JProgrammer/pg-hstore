@@ -34,6 +34,8 @@ module PgHstore
     # Use structure.sql
     config.active_record.schema_format = :sql
 
+    config.active_support.to_time_preserves_timezone = :zone
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
